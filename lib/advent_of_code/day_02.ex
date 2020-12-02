@@ -35,10 +35,9 @@ defmodule AdventOfCode.Day02 do
   end
 
   def check_password_2(pos_1, pos_2, letter, password) do
-    letters = String.codepoints(password)
     # positions are 1-indexed
-    pos_1_valid = Enum.at(letters, pos_1 - 1) == letter
-    pos_2_valid = Enum.at(letters, pos_2 - 1) == letter
+    pos_1_valid = String.at(password, pos_1 - 1) == letter
+    pos_2_valid = String.at(password, pos_2 - 1) == letter
 
     pos_1_valid != pos_2_valid
   end
