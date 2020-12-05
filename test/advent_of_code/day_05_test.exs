@@ -3,19 +3,16 @@ defmodule AdventOfCode.Day05Test do
 
   import AdventOfCode.Day05
 
-  @tag :skip
+  # @tag :skip
   test "part1" do
-    input = nil
-    result = part1(input)
-
-    assert result
+    assert "FBFBBFFRLR" |> String.codepoints() |> calc_seat_pos() == {44, 5}
+    assert "BFFFBBFRRR" |> String.codepoints() |> calc_seat_pos() == {70, 7}
+    assert "FFFBBBFRRR" |> String.codepoints() |> calc_seat_pos() == {14, 7}
+    assert "BBFFBBFRLL" |> String.codepoints() |> calc_seat_pos() == {102, 4}
   end
 
-  @tag :skip
-  test "part2" do
-    input = nil
-    result = part2(input)
-
-    assert result
-  end
+  # no tests for p2
+  # @tag :skip
+  # test "part2" do
+  # end
 end
