@@ -29,14 +29,14 @@ defmodule AdventOfCode.Day04 do
     |> Enum.all?(& &1)
   end
 
-  def valid_field?("byr", date), do: valid_range?(date, 1920..2002)
-  def valid_field?("iyr", date), do: valid_range?(date, 2010..2020)
-  def valid_field?("eyr", date), do: valid_range?(date, 2020..2030)
+  def valid_field?("byr", date), do: valid_date_range?(date, 1920..2002)
+  def valid_field?("iyr", date), do: valid_date_range?(date, 2010..2020)
+  def valid_field?("eyr", date), do: valid_date_range?(date, 2020..2030)
 
   def valid_field?("hgt", height) do
-    case String.split_at(height, -2) do
-      {h, "cm"} -> valid_range?(h, 150..193)
-      {h, "in"} -> valid_range?(h, 59..76)
+    case Integer.parse(height) do
+      {h, "cm"} -> h in 150..193
+      {h, "in"} -> h in 59..76
       _ -> false
     end
   end
@@ -45,10 +45,7 @@ defmodule AdventOfCode.Day04 do
     Regex.match?(~r/^([0-9a-f]){6}$/, color)
   end
 
-  def valid_field?("hcl", _), do: false
-
   def valid_field?("ecl", color) when color in ~w/amb blu brn gry grn hzl oth/, do: true
-  def valid_field?("ecl", _), do: false
 
   def valid_field?("pid", id) do
     Regex.match?(~r/^([0-9]){9}$/, id)
@@ -58,11 +55,7 @@ defmodule AdventOfCode.Day04 do
 
   def valid_field?(_, _), do: false
 
-  def valid_range?(num, range) do
-    try do
-      num |> String.to_integer() |> Kernel.in(range)
-    catch
-      _ -> false
-    end
+  def valid_date_range?(date, range) do
+    date |> String.to_integer() |> Kernel.in(range)
   end
 end
