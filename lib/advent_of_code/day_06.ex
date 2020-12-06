@@ -20,7 +20,7 @@ defmodule AdventOfCode.Day06 do
   end
 
   def find_common_answers(group) do
-    frequencies = Enum.frequencies(group) |> IO.inspect()
+    frequencies = Enum.frequencies(group)
     lines = Map.get(frequencies, "\n", 0) + 1
 
     frequencies |> Enum.filter(fn {_k, v} -> v == lines end) |> Enum.count()
