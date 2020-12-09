@@ -20,5 +20,7 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-advent_of_code_2018-*.tar
+advent_of_code*.tar
 
+# Mac stuff
+.DS_Store
