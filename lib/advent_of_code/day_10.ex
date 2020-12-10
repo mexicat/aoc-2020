@@ -13,10 +13,11 @@ defmodule AdventOfCode.Day10 do
   def part2(input) do
     Agent.start_link(&Map.new/0, name: __MODULE__)
 
-    res = input
-    |> String.split("\n", trim: true)
-    |> Enum.map(&String.to_integer/1)
-    |> find_combinations(0)
+    res =
+      input
+      |> String.split("\n", trim: true)
+      |> Enum.map(&String.to_integer/1)
+      |> find_combinations(0)
 
     Agent.stop(__MODULE__)
 
@@ -43,7 +44,8 @@ defmodule AdventOfCode.Day10 do
         Agent.update(__MODULE__, &Map.put(&1, adapter, val))
         val
 
-      x -> x
+      x ->
+        x
     end
   end
 
