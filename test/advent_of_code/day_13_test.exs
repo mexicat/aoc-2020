@@ -3,19 +3,19 @@ defmodule AdventOfCode.Day13Test do
 
   import AdventOfCode.Day13
 
-  @tag :skip
-  test "part1" do
-    input = nil
-    result = part1(input)
+  @input """
+  939
+  7,13,x,x,59,x,31,19
+  """
 
-    assert result
+  # @tag :skip
+  test "part1" do
+    assert part1(@input) == 295
   end
 
-  @tag :skip
+  # @tag :skip
   test "part2" do
-    input = nil
-    result = part2(input)
-
-    assert result
+    assert part2("0\n17,x,13,19") == 3417
+    # assert part2(@input) == 1068781
   end
 end
