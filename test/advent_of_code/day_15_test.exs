@@ -5,15 +5,12 @@ defmodule AdventOfCode.Day15Test do
 
   # @tag :skip
   test "part1" do
-    input = "0,3,6"
-    assert part1(input) == 436
+    assert part1("0,3,6") == 436
   end
 
-  @tag :skip
+  # @tag :skip
   test "part2" do
-    input = nil
-    result = part2(input)
-
-    assert result
+    assert part2("0,3,6") == 175594
+    assert part2("1,3,2") == 2578
   end
 end
