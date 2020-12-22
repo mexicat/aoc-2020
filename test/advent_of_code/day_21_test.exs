@@ -3,12 +3,16 @@ defmodule AdventOfCode.Day21Test do
 
   import AdventOfCode.Day21
 
-  @tag :skip
+  # @tag :skip
   test "part1" do
-    input = nil
-    result = part1(input)
+    input = """
+    mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
+    trh fvjkl sbzzf mxmxvkd (contains dairy)
+    sqjhc fvjkl (contains soy)
+    sqjhc mxmxvkd sbzzf (contains fish)
+    """
 
-    assert result
+    assert part1(input)== 5
   end
 
   @tag :skip
