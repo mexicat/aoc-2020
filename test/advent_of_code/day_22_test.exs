@@ -3,19 +3,29 @@ defmodule AdventOfCode.Day22Test do
 
   import AdventOfCode.Day22
 
-  @tag :skip
-  test "part1" do
-    input = nil
-    result = part1(input)
+  @input """
+  Player 1:
+  9
+  2
+  6
+  3
+  1
 
-    assert result
+  Player 2:
+  5
+  8
+  4
+  7
+  10
+  """
+
+  # @tag :skip
+  test "part1" do
+    assert part1(@input) == 306
   end
 
-  @tag :skip
+  # @tag :skip
   test "part2" do
-    input = nil
-    result = part2(input)
-
-    assert result
+    assert part2(@input) == 291
   end
 end
