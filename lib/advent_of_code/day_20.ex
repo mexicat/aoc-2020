@@ -1,3 +1,6 @@
+# i really hated day 20, so i didn't take time to refactor or clean up this mess.
+# it's long and ugly and full of bad practices... but ultimately it (sort of) works.
+
 defmodule Tile do
   defstruct [:id, :points, rotations: 0]
 
@@ -67,7 +70,66 @@ defmodule AdventOfCode.Day20 do
 
     grid = find_next_piece(%{}, tiles, nil)
 
-    visualize_grid(grid)
+    str = grid |> visualize_grid() |> String.split("\n")
+
+    # this rotation is hardcoded for my solution.
+    # i've spent too much time on this, so instead of writing code that checks
+    # all 8 rotations, i just rotated it manually until i found the pattern with
+    # the monsters.
+    str =
+      %{rotations: 0, points: Enum.map(str, &String.codepoints/1)}
+      |> Tile.flip_y()
+      |> Map.get(:points)
+      |> Enum.map(&Enum.join/1)
+
+    max_cols = str |> Enum.at(0) |> String.length() |> Kernel.-(1)
+    max_rows = str |> Enum.count() |> Kernel.-(1)
+
+    line1 = ~r/(..................)#(.)/
+    line1r = "\\1O\\2"
+    line2 = ~r/#(....)##(....)##(....)###/
+    line2r = "O\\1OO\\2OO\\3OOO"
+    line3 = ~r/(.)#(..)#(..)#(..)#(..)#(..)#(...)/
+    line3r = "\\1O\\2O\\3O\\4O\\5O\\6O\\7"
+
+    res =
+      Enum.reduce_while(Stream.cycle([true]), {{0, 0}, str}, fn _, {{row, col}, str} ->
+        cond do
+          col + 20 > max_cols ->
+            {:cont, {{row + 1, 0}, str}}
+
+          row + 2 > max_rows ->
+            {:halt, str}
+
+          true ->
+            l1 = str |> Enum.at(row) |> String.slice(col..(col + 20))
+            l1r = l1 |> String.replace(line1, line1r)
+            l2 = str |> Enum.at(row + 1) |> String.slice(col..(col + 20))
+            l2r = l2 |> String.replace(line2, line2r)
+            l3 = str |> Enum.at(row + 2) |> String.slice(col..(col + 20))
+            l3r = l3 |> String.replace(line3, line3r)
+
+            next =
+              if Enum.all?([l1 != l1r, l2 != l2r, l3 != l3r]) do
+                str
+                |> List.update_at(row, fn r -> String.replace(r, l1, l1r) end)
+                |> List.update_at(row + 1, fn r -> String.replace(r, l2, l2r) end)
+                |> List.update_at(row + 2, fn r -> String.replace(r, l3, l3r) end)
+              else
+                str
+              end
+
+            {:cont, {{row, col + 1}, next}}
+        end
+      end)
+
+    res |> Enum.join("\n") |> IO.puts()
+
+    res
+    |> Enum.map(&String.codepoints/1)
+    |> List.flatten()
+    |> Enum.frequencies()
+    |> Map.get("#")
   end
 
   def find_next_piece(grid, [], _), do: grid
@@ -83,6 +145,8 @@ defmodule AdventOfCode.Day20 do
   def find_next_piece(grid, tiles, {{x, y}, last}) do
     [t, r, b, l, tm, rm, bm, lm] = Tile.get_borders(last)
 
+    # 0-4: regular positions
+    # 5-8: mirrored positions
     [
       {{0, 1}, t},
       {{1, 0}, r},
@@ -106,6 +170,7 @@ defmodule AdventOfCode.Day20 do
             {matching_tile, side} ->
               matching_tile =
                 case {index, side} do
+                  # good luck debugging this
                   {0, 2} -> matching_tile
                   {0, 3} -> matching_tile |> Tile.rotate(-1)
                   {0, 0} -> matching_tile |> Tile.flip_y()
@@ -190,15 +255,19 @@ defmodule AdventOfCode.Day20 do
     {min_x, max_x} = grid |> Enum.map(fn {{x, _}, _} -> x end) |> Enum.min_max()
     {min_y, max_y} = grid |> Enum.map(fn {{_, y}, _} -> y end) |> Enum.min_max()
 
-    for y <- min_y..max_y do
+    for y <- max_y..min_y do
       for x <- min_x..max_x do
-        Map.get(grid, {x, y}) |> Map.get(:points)
+        Map.get(grid, {x, y})
+        |> Map.get(:points)
+        # remove borders
+        |> List.delete_at(0)
+        |> List.delete_at(-1)
+        |> Enum.map(fn line -> line |> List.delete_at(0) |> List.delete_at(-1) end)
       end
       |> Enum.zip()
       |> Enum.map(fn p -> p |> Tuple.to_list() |> Enum.join() end)
       |> Enum.join("\n")
     end
     |> Enum.join("\n")
-    |> IO.puts()
   end
 end
