@@ -22,7 +22,8 @@ defmodule AdventOfCode2020.MixProject do
   defp deps do
     [
       {:benchee, "~> 1.0"},
-      {:httpoison, "~> 1.7"}
+      {:httpoison, "~> 1.7"},
+      {:hexgrid, "~> 2.1"}
     ]
   end
 end
