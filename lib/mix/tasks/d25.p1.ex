@@ -3,9 +3,10 @@ defmodule Mix.Tasks.D25.P1 do
 
   import AdventOfCode.Day25
 
-  @shortdoc "Day 25 Part 1"
+  @shortdoc "Day 25"
+
   def run(args) do
-    input = nil
+    input = AdventOfCode.Loader.load(25)
 
     if Enum.member?(args, "-b"),
       do: Benchee.run(%{part_1: fn -> input |> part1() end}),
